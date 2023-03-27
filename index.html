@@ -1,16 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Pushka</title>
+    <title>Drag and Drop Example</title>
+    <style>
+		/* Стилизация элементов */
+		.block {
+			display: inline-block;
+			padding: 10px;
+			background-color: #f2f2f2;
+			border: 1px solid #ddd;
+			cursor: move;
+		}
+	</style>
+    <script>
+		// Функция для обработки события начала перетаскивания
+		function dragStart(event) {
+			// Запомнить идентификатор элемента, который будет перемещен
+			event.dataTransfer.setData("text", event.target.id);
+		}
+
+		// Функция для обработки события отпускания элемента после перетаскивания
+		function drop(event) {
+			// Предотвратить стандартное поведение браузера при событии drop
+			event.preventDefault();
+
+			// Получить идентификатор перемещаемого элемента из данных, сохраненных в dragStart
+			var data = event.dataTransfer.getData("text");
+
+			// Найти перемещаемый элемент и переместить его в новую позицию внутри контейнера
+			var draggableElement = document.getElementById(data);
+			var dropzone = event.target;
+			dropzone.appendChild(draggableElement);
+		}
+
+		// Функция для обработки события перемещения элемента над зоной для сброса
+		function dragOver(event) {
+			// Предотвратить стандартное поведение браузера при событии dragOver
+			event.preventDefault();
+		}
+	</script>
 </head>
 <body>
-<div id="container">
-    <canvas id="canvas"></canvas>
+<h1>Drag and Drop Example</h1>
+<p>Перетащите блоки ниже на страницу и переместите их в новую позицию</p>
+
+<div id="container" style="border: 1px solid #ddd; padding: 20px;">
+    <div id="block1" class="block" draggable="true" ondragstart="dragStart(event)">Блок 1</div>
+    <div id="block2" class="block" draggable="true" ondragstart="dragStart(event)">Блок 2</div>
+    <div id="block3" class="block" draggable="true" ondragstart="dragStart(event)">Блок 3</div>
 </div>
-<script src="java.js"></script>
+<script>
+		var container = document.getElementById("container");
+		container.addEventListener("drop", drop);
+		container.addEventListener("dragover", dragOver);
+	</script>
 </body>
 </html>
+
 
 
 
